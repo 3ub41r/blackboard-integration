@@ -1,0 +1,3 @@
+external_person_key,data_source_key,firstname,lastname,user_id,passwd,available_ind,email,institution_role
+ZX180119BEQS04,sistest,AZURIN BIN ARSAT1,,ZX180119BEQS04,ZX180119BEQS04,Y,,student
+ZX180698BEQS04,sistest,MOHSIN BIN ISHAK2,,ZX180698BEQS04,ZX180698BEQS04,Y,,student
