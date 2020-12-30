@@ -111,7 +111,7 @@ EOF
 #mailMsg(): in the event processing hits configured thresholds this function is called
 # composes and sends email to admins warning of long processing times (expected in some scenarios eg: large # of course creates using templates
 function mailMsg {
-  if [ $errorCount = '0' ]; then
+  if [[ $errorCount = '0' ]]; then
     MSG_LEVEL="SUCCESS"
   else
     MSG_LEVEL="ERROR"
@@ -126,11 +126,11 @@ function mailMsg {
   emailmsg="$emailmsg\nCompleted: $completedCount"
   emailmsg="$emailmsg\nWarnings: $warningCount"
 
-  if [ $errorCount != '0' ]; then
+  if [[ $errorCount != '0' ]]; then
     emailmsg="$emailmsg\nErrors: $errorCount"
   fi
 
-  if [ $errorCount != '0' ]; then
+  if [[ $errorCount != '0' ]]; then
   	if [ $process_logs != '0' ]; then
   		emailmsg="$emailmsg\nError Messages:\n"
     	emailmsg=$emailmsg$sql_error_results
@@ -318,4 +318,4 @@ fi
 
 #-- uncomment the below line for debugging
 #echo "Mail message..."
-mailMsg
+# mailMsg

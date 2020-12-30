@@ -50,13 +50,13 @@ admin_email="zubair@utmspace.edu.my"
 
 #ScriptPath: full path to manual script - store in same directory as sis_snpshtFF_auto 
 #eg: ScriptPath="/usr/local/bin/ssff_scripts/sis_snpshtFF_manual.sh"
-ScriptPath="/home/vagrant/host/blackboard/scripts/sis_snpshtFF_manual.sh"
+ScriptPath="/usr/src/myapp/src/sis_snpshtFF_manual.sh"
 
 #DataFilePath: full path to data file directory eg: DataFilePath="/usr/local/blackboard/apps/snapshot/data/feeds/"
-DataFilePath="/home/vagrant/host/blackboard/data/"
+DataFilePath="/usr/src/myapp/data/"
 
 #ArchiveFilePath: full path to data file archive directory eg: ArchiveFilePath="/usr/local/blackboard/apps/snapshot/data/sis_archives/"
-ArchiveFilePath="/home/vagrant/host/blackboard/archives/"
+ArchiveFilePath="/usr/src/myapp/archives/"
 
 #AutoUser: the username as configured in the snapshot integration eg: AutoUser="13a29f6e-66e6-4ab9-ad4b-174d3ca71723"
 AutoUser="a2ae284a-e63b-4e50-bbb8-2256ac38a91a"
@@ -241,7 +241,8 @@ if [ "${#CourseFiles[@]}" -gt 0 ]; then #there are course feeds to process
 		echo "Command $command"
 		$command
 		echo "Completed: $command"
-		mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
+		rm $fileToProcess
+		# mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
 		counter=$(( $counter + 1 ))
 	done
 fi
@@ -260,7 +261,7 @@ if [ "${#PersonFiles[@]}" -gt 0 ]; then
 		echo "Command $command"
 		$command
 		echo "Completed: $command"
-		mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
+		# mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
 		counter=$(( $counter + 1 ))
 	done
 fi
@@ -280,7 +281,7 @@ if [ "${#MembershipFiles[@]}" -gt 0 ]; then
 		echo "Command $command"
 		$command
 		echo "Completed: $command"
-		mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
+		# mv $fileToProcess $ArchiveFilePath$(basename "$fileToProcess")`date +_%Y%m%d-%H:%M:%S`
 		counter=$(( $counter + 1 ))
 	done
 fi
@@ -307,7 +308,7 @@ fi
 #	done
 #fi
 
-mailReport
+# mailReport
 
 #successfully made it here so discard the lock and exit
 rm -f "/var/tmp/script.lock"
