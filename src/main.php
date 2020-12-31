@@ -3,19 +3,20 @@ require 'Export.php';
 require 'Upload.php';
 
 $serverName = "teams.utmspace.edu.my";
-// $database = "SPACEDB1000";
 $username = 'admin_teams';
 $password = '@!admin_teams!@';
 $url = 'https://utmspace.blackboard.com/webapps/bb-data-integration-flatfile-BB5c2d88ecaab71/endpoint';
 
 $databases = [
-    // 'SPACEDB1000',
+    'SPACEDB1000',
     'SPACEDB1000Dip',
-    // 'SPACEDB1000Foundation',
+    'SPACEDB1000Foundation',
 ];
 
 try {
     foreach ($databases as $database) {
+        echo "Processing data for $database...\n\n";
+
         // Generate files
         $export = new Export($serverName, $username, $password, $database);
         $export->processAll();
