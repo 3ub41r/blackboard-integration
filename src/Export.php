@@ -63,7 +63,7 @@ class Export
      */
     public function processLecturers()
     {
-        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        $sql = "SELECT Matrik AS external_person_key,
         '$this->datasourceKey' AS data_source_key,
         Nama AS firstname,
         '' AS lastname,
@@ -80,7 +80,7 @@ class Export
 
     public function processStudents()
     {
-        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        $sql = "SELECT Matrik AS external_person_key,
         '$this->datasourceKey' AS data_source_key,
         Nama AS firstname,
         '' AS lastname,
@@ -97,7 +97,7 @@ class Export
 
     public function processCourses()
     {
-        $sql = "SELECT TOP 5 Kod_seksyen AS external_course_key,
+        $sql = "SELECT Kod_seksyen AS external_course_key,
         Kod_seksyen AS course_id,
         Namabi AS course_name,
         '$this->datasourceKey' AS data_source_key 
@@ -109,7 +109,7 @@ class Export
 
     public function processEnrollments()
     {
-        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        $sql = "SELECT Matrik AS external_person_key,
         Kod AS external_course_key,
         'student' AS [role],
         '$this->datasourceKey' AS data_source_key
@@ -121,7 +121,7 @@ class Export
 
     public function processSubjectLecturers()
     {
-        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        $sql = "SELECT Matrik AS external_person_key,
         Kod AS external_course_key,
         'instructor' AS [role],
         '$this->datasourceKey' AS data_source_key
