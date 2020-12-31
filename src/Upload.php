@@ -1,9 +1,13 @@
 <?php
+require 'vendor/autoload.php';
+
+use GuzzleHttp\Client;
 
 class Upload
 {
     protected $source;
     protected $endpointUrl;
+    protected $client;
 
     /**
      * Upload exported flat files to Blackboard
@@ -15,6 +19,7 @@ class Upload
     {
         $this->source = $source;
         $this->endpointUrl = $endpointUrl;
+        $this->client = new Client();
     }
 
     /**
@@ -31,7 +36,7 @@ class Upload
         ];
 
         // Read first line of file
-        $line = fgets(fopen($file, 'r'));
+        $line = fgets(fopen($this->buildPath($file), 'r'));
 
         foreach ($feedMap as $key => $value) {
             if (strpos($line, $key) !== false) {
@@ -42,7 +47,15 @@ class Upload
         return null;
     }
 
-    public function process()
+    protected function buildPath($file)
+    {
+        return join('/', [
+            trim($this->source, '/'),
+            trim($file, '/'),
+        ]);
+    }
+
+    public function process($debug = false)
     {
         // Traverse files in directory
         $files = scandir($this->source);
@@ -52,15 +65,29 @@ class Upload
 
             $feedType = $this->getFeedType($file);
 
+            if (! $feedType) continue;
+
             // Build URL
             $url = $this->endpointUrl . "/$feedType/store";
 
-            
+            // Append path and file
+            $filePath = $this->buildPath($file);
+    
+            $response = $this->client->request('POST', $url, [
+                'body' => fopen($filePath, 'r'),
+                'auth' => [
+                    'a2ae284a-e63b-4e50-bbb8-2256ac38a91a', 
+                    '6N^ltz5@2@a0'
+                ],
+                'headers' => [
+                    'Content-Type' => 'text/plain',
+                ],
+                'debug' => $debug,
+            ]);
+
+            if ($debug) {
+                echo $response->getBody();
+            }
         }
-
-        // Determine type of file
-
-        // Upload to SIS
-
     }
 }

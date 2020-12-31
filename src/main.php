@@ -1,22 +1,20 @@
 <?php
-require_once 'Export.php';
+require 'Export.php';
+require 'Upload.php';
 
 $serverName = "teams.utmspace.edu.my";
 $database = "SPACEDB1000";
 $username = 'admin_teams';
 $password = '@!admin_teams!@';
+$url = 'https://utmspace.blackboard.com/webapps/bb-data-integration-flatfile-BB5c2d88ecaab71/endpoint';
 
-try  
-{
-    // $export = new Export($serverName, $username, $password, $database);
-    // $export->processAll();
+try {
+    // Generate files
+    $export = new Export($serverName, $username, $password, $database);
+    $export->processAll();
 
-    $path = '../data';
-    $files = scandir($path);
-
-    var_dump($files);
-}  
-catch(Exception $e)  
-{   
+    // Upload generated files
+    (new Upload('../data', $url))->process($debug = true);
+} catch(Exception $e) {   
     die( print_r( $e->getMessage() ) );   
 }
