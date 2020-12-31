@@ -14,7 +14,7 @@ try {
     $export->processAll();
 
     // Upload generated files
-    (new Upload('../data', $url))->process($debug = true);
+    (new Upload('../data', $url))->process();
 } catch(Exception $e) {   
     die( print_r( $e->getMessage() ) );   
 }
