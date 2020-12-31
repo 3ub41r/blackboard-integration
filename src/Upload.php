@@ -73,6 +73,7 @@ class Upload
             // Append path and file
             $filePath = $this->buildPath($file);
     
+            // POST file
             $response = $this->client->request('POST', $url, [
                 'body' => fopen($filePath, 'r'),
                 'auth' => [
