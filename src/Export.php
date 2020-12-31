@@ -60,7 +60,7 @@ class Export
     {
         $this->processLecturers();
         $this->processStudents();
-        $this->processSubjects();
+        $this->processCourses();
         // $this->processEnrollment();
         // $this->processSubjectLecturers();
     }
@@ -102,7 +102,7 @@ class Export
         $this->generateFile($stmt->fetchAll(), 'students.txt');
     }
 
-    public function processSubjects()
+    public function processCourses()
     {
         $sql = "SELECT TOP 5 Kod_seksyen AS external_course_key,
         Kod_seksyen AS course_id,
@@ -111,7 +111,7 @@ class Export
         FROM ELEARNING_COURSE";
 
         $stmt = $this->connection->query($sql);
-        $this->generateFile($stmt->fetchAll(), 'subjects.txt');
+        $this->generateFile($stmt->fetchAll(), 'courses.txt');
     }
 
     public function processEnrollment()
