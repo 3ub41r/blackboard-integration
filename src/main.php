@@ -8,13 +8,13 @@ $password = '@!admin_teams!@';
 
 try  
 {
-    $export = new Export($serverName, $username, $password, $database);
+    // $export = new Export($serverName, $username, $password, $database);
+    // $export->processAll();
 
-    $export->generateFile($export->getLecturers(), 'lecturers.txt');
-    $export->generateFile($export->getStudents(), 'students.csv');
-    // $export->generateFile($export->getSubjects(), 'subjects.csv');
+    $path = '../data';
+    $files = scandir($path);
 
-    // $export->generateFile($export->getEnrollment(), 'enrollment.txt');
+    var_dump($files);
 }  
 catch(Exception $e)  
 {   

@@ -33,7 +33,6 @@ class Export
         $this->database = $database;
 
         $this->connection->query("USE $database;");
-        // $this->connection = new PDO("sqlsrv:server=$this->serverName;Database=$this->database", $this->username, $this->password, self::PDO_OPTIONS);
     }
 
     public function generateFile($results, $output)
@@ -57,10 +56,19 @@ class Export
         file_put_contents($output, $text);
     }
 
+    public function processAll()
+    {
+        $this->processLecturers();
+        $this->processStudents();
+        $this->processSubjects();
+        // $this->processEnrollment();
+        // $this->processSubjectLecturers();
+    }
+
     /**
      * Get lecturers teaching the current semester.
      */
-    public function getLecturers()
+    public function processLecturers()
     {
         $sql = "SELECT TOP 5 Matrik AS external_person_key,
         '$this->datasourceKey' AS data_source_key,
@@ -74,11 +82,10 @@ class Export
         FROM ELEARNING_PENSYARAH";
 
         $stmt = $this->connection->query($sql);
-
-        return $stmt->fetchAll();
+        $this->generateFile($stmt->fetchAll(), 'lecturers.txt');
     }
 
-    public function getStudents()
+    public function processStudents()
     {
         $sql = "SELECT TOP 5 Matrik AS external_person_key,
         '$this->datasourceKey' AS data_source_key,
@@ -92,11 +99,10 @@ class Export
         FROM ELEARNING_PELAJAR";
 
         $stmt = $this->connection->query($sql);
-
-        return $stmt->fetchAll();
+        $this->generateFile($stmt->fetchAll(), 'students.txt');
     }
 
-    public function getSubjects()
+    public function processSubjects()
     {
         $sql = "SELECT TOP 5 Kod_seksyen AS external_course_key,
         Kod_seksyen AS course_id,
@@ -105,11 +111,10 @@ class Export
         FROM ELEARNING_COURSE";
 
         $stmt = $this->connection->query($sql);
-
-        return $stmt->fetchAll();
+        $this->generateFile($stmt->fetchAll(), 'subjects.txt');
     }
 
-    public function getEnrollment()
+    public function processEnrollment()
     {
         $sql = "SELECT Kod AS course_id,
         Matrik AS [user_id],
@@ -119,11 +124,10 @@ class Export
         FROM ELEARNING_STUDENT_COURSE";
 
         $stmt = $this->connection->query($sql);
-
-        return $stmt->fetchAll();
+        $this->generateFile($stmt->fetchAll(), 'enrollment.txt');
     }
 
-    public function getSubjectLecturers()
+    public function processSubjectLecturers()
     {
         // 
     }
