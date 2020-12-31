@@ -28,13 +28,6 @@ class Export
         $this->connection = new PDO("sqlsrv:server=$this->serverName;Database=$this->database", $this->username, $this->password, self::PDO_OPTIONS);
     }
 
-    public function setDatabase($database)
-    {
-        $this->database = $database;
-
-        $this->connection->query("USE $database;");
-    }
-
     public function generateFile($results, $output)
     {
         if (! $results || empty($results)) return null;

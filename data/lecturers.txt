@@ -1,6 +1,0 @@
-external_person_key|data_source_key|firstname|lastname|user_id|passwd|available_ind|email|institution_role
-7329|testsis|AZLAN BIN MOHD ZAIN, Dr.||7329|740606065479|Y|azlanmz@utm.my|staff
-2134|testsis|Nadzari Shaari||2134|4752297|Y||staff
-7026|testsis|Haswadi b. Hasan||7026|710514025675|Y|haswadi@utm.my|staff
-1792|testsis|Daut Daman, Prof. Madya||1792|4679601|Y|daut@utm.my|staff
-2324|testsis|Abdullah Sani Ahmad, Prof. Madya Dr.||2324|610318105231|Y|sani61@hotmail.com|staff
