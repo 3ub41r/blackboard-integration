@@ -61,8 +61,8 @@ class Export
         $this->processLecturers();
         $this->processStudents();
         $this->processCourses();
-        // $this->processEnrollment();
-        // $this->processSubjectLecturers();
+        $this->processEnrollments();
+        $this->processSubjectLecturers();
     }
 
     /**
@@ -114,21 +114,27 @@ class Export
         $this->generateFile($stmt->fetchAll(), 'courses.txt');
     }
 
-    public function processEnrollment()
+    public function processEnrollments()
     {
-        $sql = "SELECT Kod AS course_id,
-        Matrik AS [user_id],
-        'S' AS course_role,
-        'Y' AS system_available,
-        'Y' AS course_available
+        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        Kod AS external_course_key,
+        'student' AS [role],
+        '$this->datasourceKey' AS data_source_key
         FROM ELEARNING_STUDENT_COURSE";
 
         $stmt = $this->connection->query($sql);
-        $this->generateFile($stmt->fetchAll(), 'enrollment.txt');
+        $this->generateFile($stmt->fetchAll(), 'enrollments.txt');
     }
 
     public function processSubjectLecturers()
     {
-        // 
+        $sql = "SELECT TOP 5 Matrik AS external_person_key,
+        Kod AS external_course_key,
+        'instructor' AS [role],
+        '$this->datasourceKey' AS data_source_key
+        FROM ELEARNING_LECTURER_COURSE";
+
+        $stmt = $this->connection->query($sql);
+        $this->generateFile($stmt->fetchAll(), 'courselecturers.txt');
     }
 }

@@ -8,6 +8,7 @@ class Upload
     protected $source;
     protected $endpointUrl;
     protected $client;
+    protected $queue;
 
     /**
      * Upload exported flat files to Blackboard
@@ -20,10 +21,16 @@ class Upload
         $this->source = $source;
         $this->endpointUrl = $endpointUrl;
         $this->client = new Client();
+        $this->queue = [
+            'person' => [],
+            'course' => [],
+            'membership' => [],
+        ];
     }
 
     /**
      * Get feed type of file
+     * TODO: Uploads need to be done in the proper order.
      *
      * @param string $file
      * @return void
@@ -31,20 +38,25 @@ class Upload
     protected function getFeedType($file)
     {
         $feedMap = [
-            'external_person_key' => 'person',
-            'external_course_key' => 'course',
+            'lecturers.txt' => 'person',
+            'students.txt' => 'person',
+            'courses.txt' => 'course',
+            'enrollments.txt' => 'membership',
+            'courselecturers.txt' => 'membership',
         ];
 
-        // Read first line of file
-        $line = fgets(fopen($this->buildPath($file), 'r'));
+        if (! array_key_exists($file, $feedMap)) return null;
 
-        foreach ($feedMap as $key => $value) {
-            if (strpos($line, $key) !== false) {
-                return $value;
-            }
-        }
+        return $feedMap[$file];
+    }
 
-        return null;
+    protected function pushToQueue($file)
+    {
+        $feedType = $this->getFeedType($file);
+
+        if (! $feedType) return;
+
+        $this->queue[$feedType][] = $file;
     }
 
     protected function buildPath($file)
@@ -55,6 +67,37 @@ class Upload
         ]);
     }
 
+    protected function uploadFiles($debug = false)
+    {
+        // Traverse queue
+        foreach ($this->queue as $feedType => $files) {
+            foreach ($files as $file) {
+                // Build URL
+                $url = $this->endpointUrl . "/$feedType/store";
+
+                // Append path and file
+                $filePath = $this->buildPath($file);
+
+                echo "Uploading $filePath to $url...\n";
+        
+                // POST file
+                $response = $this->client->request('POST', $url, [
+                    'body' => fopen($filePath, 'r'),
+                    'auth' => [
+                        'a2ae284a-e63b-4e50-bbb8-2256ac38a91a', 
+                        '6N^ltz5@2@a0'
+                    ],
+                    'headers' => [
+                        'Content-Type' => 'text/plain',
+                    ],
+                    'debug' => $debug,
+                ]);
+
+                echo $response->getBody();
+            }
+        }
+    }
+
     public function process($debug = false)
     {
         // Traverse files in directory
@@ -63,32 +106,9 @@ class Upload
         foreach ($files as $file) {
             if (in_array($file, ['.', '..'])) continue;
 
-            $feedType = $this->getFeedType($file);
-
-            if (! $feedType) continue;
-
-            // Build URL
-            $url = $this->endpointUrl . "/$feedType/store";
-
-            // Append path and file
-            $filePath = $this->buildPath($file);
-    
-            // POST file
-            $response = $this->client->request('POST', $url, [
-                'body' => fopen($filePath, 'r'),
-                'auth' => [
-                    'a2ae284a-e63b-4e50-bbb8-2256ac38a91a', 
-                    '6N^ltz5@2@a0'
-                ],
-                'headers' => [
-                    'Content-Type' => 'text/plain',
-                ],
-                'debug' => $debug,
-            ]);
-
-            if ($debug) {
-                echo $response->getBody();
-            }
+            $this->pushToQueue($file);
         }
+
+        $this->uploadFiles($debug);
     }
 }
