@@ -15,7 +15,7 @@ $databases = [
 
 try {
     foreach ($databases as $database) {
-        echo "Processing data for $database...\n\n";
+        echo "\n\n==============================\nProcessing data for $database...\n==============================\n\n";
 
         // Generate files
         $export = new Export($serverName, $username, $password, $database);
