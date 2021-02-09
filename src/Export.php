@@ -17,20 +17,23 @@ class Export
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ];
 
-    public function __construct($serverName, $username, $password, $database = null)
+    public function __construct($serverName, $username, $password, $database, $datasourceKey = self::DATASOURCE_KEY)
     {
         $this->serverName = $serverName;
         $this->database = $database;
         $this->username = $username;
         $this->password = $password;
-        $this->datasourceKey = self::DATASOURCE_KEY;
+        $this->datasourceKey = $datasourceKey;
 
         $this->connection = new PDO("sqlsrv:server=$this->serverName;Database=$this->database", $this->username, $this->password, self::PDO_OPTIONS);
     }
 
     public function generateFile($results, $output)
     {
-        if (! $results || empty($results)) return null;
+        if (! $results || empty($results)) {
+            echo "No results for $output...\n";
+            return null;
+        }
 
         if (! file_exists(self::GENERATED_PATH)) {
             mkdir(self::GENERATED_PATH, 0777, true);
@@ -43,6 +46,11 @@ class Export
         $text = implode(self::SEPARATOR, array_keys($results[0])) . "\n";
 
         foreach ($results as $result) {
+            // Trim
+            foreach ($result as $key => $value) {
+                $result[$key] = trim($value);
+            }
+
             $text .= implode(self::SEPARATOR, $result) . "\n";
         }
 
@@ -72,7 +80,8 @@ class Export
         'Y' AS available_ind,
         Email AS email,
         'staff' AS institution_role 
-        FROM ELEARNING_PENSYARAH";
+        FROM ELEARNING_PENSYARAH
+        WHERE Matrik IS NOT NULL AND RTRIM(LTRIM(Matrik)) <> ''";
 
         $stmt = $this->connection->query($sql);
         $this->generateFile($stmt->fetchAll(), 'lecturers.txt');
@@ -89,7 +98,8 @@ class Export
         'Y' AS available_ind,
         Email AS email,
         'student' AS institution_role 
-        FROM ELEARNING_PELAJAR";
+        FROM ELEARNING_PELAJAR
+        WHERE Matrik IS NOT NULL AND RTRIM(LTRIM(Matrik)) <> ''";
 
         $stmt = $this->connection->query($sql);
         $this->generateFile($stmt->fetchAll(), 'students.txt');
