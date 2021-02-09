@@ -2,4 +2,7 @@
 
 # Clear generated files
 rm -rf /usr/src/myapp/data
-php main.php
+
+composer dump-autoload -o
+
+php run.php
