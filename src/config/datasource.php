@@ -4,4 +4,5 @@
 
 return [
     ['App\Classes\ImportFoundation', 'testsis'],
+    // ['App\Classes\ImportDiploma', 'testsis'],
 ];

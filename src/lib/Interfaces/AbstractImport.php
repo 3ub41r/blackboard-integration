@@ -27,9 +27,11 @@ abstract class AbstractImport {
         $output = self::DATA_DIR . "/{$feedType}_" . date('m-d-Y_H_i_s') . ".txt";
 
         if (! $results || empty($results)) {
-            echo "No results for $output...\n";
+            echo "\nNo results for $output...\n";
             return null;
         }
+
+        echo "\nGenerating feed file for $output (" . sizeof($results) . " rows)\n";
 
         // Create data directory if it does not exist
         if (! file_exists(self::DATA_DIR)) {
@@ -106,6 +108,11 @@ abstract class AbstractImport {
      */
     public function upload($results, $feedType)
     {
+        if (! $results || empty($results)) {
+            echo "\nNothing to upload. Skipping...\n";
+            return;
+        }
+
         $output = $this->generateFile($results, $feedType);
         $this->uploadFile($output, $feedType);
     }
@@ -114,6 +121,6 @@ abstract class AbstractImport {
     public abstract function processLecturers();
     public abstract function processStudents();
     public abstract function processCourses();
-    public abstract function processSubjectLecturers();
+    public abstract function processCourseLecturers();
     public abstract function processEnrollments();
 }
