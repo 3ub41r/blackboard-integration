@@ -11,7 +11,7 @@ $dotenv->load();
 // Add new source classes to this file
 $dataSources = include 'config/datasource.php';
 
-$sleepSeconds = 120;
+$sleepSeconds = 60;
 
 foreach ($dataSources as $dataSource) {
     $import = new $dataSource[0]($dataSource[1]);

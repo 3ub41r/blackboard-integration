@@ -92,8 +92,9 @@ class ImportDiploma extends AbstractImport
     public function processCourses()
     {
         $sql = "
-        SELECT KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 3) + '_AD_KL' AS external_course_key,
-        KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 3) + '_AD_KL' AS course_id,
+        SELECT
+        KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
+        KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS course_id,
         'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 8, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
         '$this->datasourceKey' AS data_source_key
         FROM VW_UTMSPACE_COURSE a
@@ -115,7 +116,8 @@ class ImportDiploma extends AbstractImport
     public function processCourseLecturers()
     {
         $sql = "
-        SELECT KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 3) + '_AD_KL' AS external_course_key,
+        SELECT
+        KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
         'instructor' AS [role],
         '$this->datasourceKey' AS data_source_key
@@ -133,7 +135,8 @@ class ImportDiploma extends AbstractImport
     public function processEnrollments()
     {
         $sql = "
-        SELECT a.KOD_KURSUS + '_' + a.SEKSYEN + '_' + SUBSTRING(a.SEMESTER, 3, 2) + SUBSTRING(a.SEMESTER, 7, 3) + '_AD_KL' AS external_course_key,
+        SELECT
+        a.KOD_KURSUS + '_' + a.SEKSYEN + '_' + SUBSTRING(a.SEMESTER, 3, 2) + SUBSTRING(a.SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(a.SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         a.NO_MATRIK AS external_person_key,
         'student' AS [role],
         '$this->datasourceKey' AS data_source_key

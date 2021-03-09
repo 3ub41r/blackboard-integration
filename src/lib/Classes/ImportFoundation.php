@@ -66,13 +66,13 @@ class ImportFoundation extends AbstractImport
     {
         $sql = "
         SELECT DISTINCT 
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + CAST(d.semNo AS VARCHAR) + '_AF_' + 
+        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + CAST(d.semNo AS VARCHAR) + '_AF_' + 
+        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
@@ -94,7 +94,7 @@ class ImportFoundation extends AbstractImport
     public function processCourseLecturers()
     {
         $sql = "
-        SELECT a.subjCode + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + CAST(b.semNo AS VARCHAR) + '_AF_' + 
+        SELECT a.subjCode + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + RIGHT('00' + CAST(b.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
@@ -117,7 +117,7 @@ class ImportFoundation extends AbstractImport
     {
         $sql = "
         SELECT b.stuMetricNo AS external_person_key,
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + CAST(c.semNo AS VARCHAR) + '_AF_' + 
+        a.subjCode + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
