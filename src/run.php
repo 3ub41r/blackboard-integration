@@ -11,10 +11,12 @@ $dotenv->load();
 // Add new source classes to this file
 $dataSources = include 'config/datasource.php';
 
-$sleepSeconds = 60;
+// Sleep to avoid throttling the server
+// $sleepSeconds = 60;
+$sleepSeconds = 2;
 
 foreach ($dataSources as $dataSource) {
-    $import = new $dataSource[0]($dataSource[1]);
+    $import = new $dataSource();
     
     $import->processCourses();
     sleep($sleepSeconds);

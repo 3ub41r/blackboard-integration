@@ -21,7 +21,9 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
 COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp/src
-RUN composer install
+WORKDIR /usr/src/myapp
+# Make executable
+RUN chmod 0644 /usr/src/myapp/src/run.sh
+RUN cd src && composer install
 
-CMD [ "./run.sh" ]
+CMD ["bash", "/usr/src/myapp/src/run.sh"]

@@ -9,10 +9,8 @@ class ImportFoundation extends AbstractImport
 {
     protected $connection;
 
-    public function __construct($datasourceKey)
+    public function __construct()
     {
-        parent::__construct($datasourceKey);
-
         $serverName = $_ENV['SQL_SERVER_HOST'];
         $username = $_ENV['SQL_SERVER_USER'];
         $password = $_ENV['SQL_SERVER_PASSWORD'];
@@ -23,17 +21,23 @@ class ImportFoundation extends AbstractImport
     public function processLecturers()
     {
         $sql = "
-        SELECT Matrik AS external_person_key,
-        '$this->datasourceKey' AS data_source_key,
-        UPPER(Nama) AS firstname,
+        SELECT DISTINCT a.lecID AS external_person_key,
+        'FOUNDATION_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key,
+        UPPER(a.lecName) AS firstname,
         '' AS lastname,
-        Matrik AS [user_id],
-        Nokp AS passwd,
+        UPPER(a.lecID) AS [user_id],
+        a.lecICNo AS passwd,
         'Y' AS available_ind,
-        Email AS email,
-        'staff' AS institution_role 
-        FROM ELEARNING_PENSYARAH
-        WHERE Matrik IS NOT NULL AND RTRIM(LTRIM(Matrik)) <> ''";
+        email,
+        'staff' AS institution_role
+        FROM Lecturer a
+        JOIN SubjOffered b ON b.lecID = a.lecID
+        JOIN (
+            SELECT TOP 1 *
+            FROM SesSem
+            WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
+            ORDER BY sesSemNo DESC
+        ) c ON c.sesSemNo = b.sesSemNo";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -44,17 +48,23 @@ class ImportFoundation extends AbstractImport
     public function processStudents()
     {
         $sql = "
-        SELECT Matrik AS external_person_key,
-        '$this->datasourceKey' AS data_source_key,
-        UPPER(Nama) AS firstname,
+        SELECT DISTINCT UPPER(b.stuMetricNo) AS external_person_key,
+        'FOUNDATION_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key,
+        UPPER(b.stuName) AS firstname,
         '' AS lastname,
-        Matrik AS [user_id],
-        Matrik AS passwd,
+        UPPER(b.stuMetricNo) AS [user_id],
+        b.stuICNo AS [passwd],
         'Y' AS available_ind,
-        Email AS email,
+        b.eMail AS email,
         'student' AS institution_role 
-        FROM ELEARNING_PELAJAR
-        WHERE Matrik IS NOT NULL AND RTRIM(LTRIM(Matrik)) <> ''";
+        FROM StuRegSubj a
+        JOIN Main b ON b.stuRef = a.stuRef
+        JOIN (
+            SELECT TOP 1 *
+            FROM SesSem
+            WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
+            ORDER BY sesSemNo DESC
+        ) c ON c.sesSemNo = a.sesSemNo";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -79,7 +89,7 @@ class ImportFoundation extends AbstractImport
             ELSE a.centerCode
         END AS course_id,
         'SEM ' + SUBSTRING(d.sesName, 3, 2) + SUBSTRING(d.sesName, 8, 2) + '-' + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + ': ' + UPPER(b.subjNameBI) AS course_name,
-        '$this->datasourceKey' AS data_source_key
+        'FOUNDATION_' + REPLACE(d.sesName, '/', '') + CAST(d.semNo AS VARCHAR) AS data_source_key
         FROM StuRegSubj a
         INNER JOIN Subj b ON b.subjCode = a.subjCode 
         INNER JOIN Fac c ON c.facCode = b.facCode
@@ -102,7 +112,7 @@ class ImportFoundation extends AbstractImport
         END AS external_course_key,
         a.lecID AS external_person_key,
         'instructor' AS [role],
-        '$this->datasourceKey' AS data_source_key
+        'FOUNDATION_' + REPLACE(b.sesName, '/', '') + CAST(b.semNo AS VARCHAR) AS data_source_key
         FROM SubjOffered a
         JOIN SesSem b ON b.sesSemNo = a.sesSemNo AND GETDATE() BETWEEN b.semStartDate AND b.lectureEndDate
         WHERE RTRIM(LTRIM(a.lecID)) IS NOT NULL";
@@ -124,7 +134,7 @@ class ImportFoundation extends AbstractImport
             ELSE a.centerCode
         END AS external_course_key,
         'student' AS [role],
-        '$this->datasourceKey' AS data_source_key
+        'FOUNDATION_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
         JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND GETDATE() BETWEEN c.semStartDate AND c.lectureEndDate";

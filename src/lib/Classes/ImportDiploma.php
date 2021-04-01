@@ -10,10 +10,8 @@ class ImportDiploma extends AbstractImport
     protected $connection;
     protected $latestSemester;
 
-    public function __construct($datasourceKey)
+    public function __construct()
     {
-        parent::__construct($datasourceKey);
-
         $serverName = $_ENV['SQL_SERVER_AIMS_HOST'];
         $username = $_ENV['SQL_SERVER_AIMS_USER'];
         $password = $_ENV['SQL_SERVER_AIMS_PASSWORD'];
@@ -40,7 +38,7 @@ class ImportDiploma extends AbstractImport
         $sql = "
         SELECT
         SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
-        '$this->datasourceKey' AS data_source_key,
+        'DIPLOMA_{$this->latestSemester}' AS data_source_key,
         UPPER(NAMA) AS firstname,
         '' AS lastname,
         SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS [user_id],
@@ -67,7 +65,7 @@ class ImportDiploma extends AbstractImport
     {
         $sql = "
         SELECT NO_MATRIK AS external_person_key,
-        '$this->datasourceKey' AS data_source_key,
+        'DIPLOMA_{$this->latestSemester}' AS data_source_key,
         UPPER(NAMA) AS firstname,
         '' AS lastname,
         NO_MATRIK AS [user_id],
@@ -96,7 +94,7 @@ class ImportDiploma extends AbstractImport
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS course_id,
         'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 8, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
-        '$this->datasourceKey' AS data_source_key
+        'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE a
         WHERE EXISTS (
             SELECT *
@@ -120,7 +118,7 @@ class ImportDiploma extends AbstractImport
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
         'instructor' AS [role],
-        '$this->datasourceKey' AS data_source_key
+        'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE_LECTURER a
         JOIN VW_UTMSPACE_LECTURER b ON b.NO_PEKERJA = a.NO_PEKERJA
         WHERE ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NOT NULL
@@ -139,7 +137,7 @@ class ImportDiploma extends AbstractImport
         a.KOD_KURSUS + '_' + a.SEKSYEN + '_' + SUBSTRING(a.SEMESTER, 3, 2) + SUBSTRING(a.SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(a.SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         a.NO_MATRIK AS external_person_key,
         'student' AS [role],
-        '$this->datasourceKey' AS data_source_key
+        'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE_STUDENT a
         JOIN VW_UTMSPACE_COURSE_LECTURER b on b.KOD_KURSUS = a.KOD_KURSUS AND b.SEKSYEN = a.SEKSYEN AND b.SEMESTER = a.SEMESTER
         WHERE a.SEMESTER = '$this->latestSemester'";

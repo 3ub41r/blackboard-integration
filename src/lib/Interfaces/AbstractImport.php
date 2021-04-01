@@ -8,12 +8,12 @@ abstract class AbstractImport {
     const SEPARATOR = '|';
     const DATA_DIR = '../data';
 
-    protected $datasourceKey;
+    // protected $datasourceKey;
 
-    public function __construct($datasourceKey)
-    {
-        $this->datasourceKey = $datasourceKey;
-    }
+    // public function __construct($datasourceKey)
+    // {
+    //     $this->datasourceKey = $datasourceKey;
+    // }
 
     /**
      * Generate file from results and save it to a file in the output location.
@@ -40,6 +40,7 @@ abstract class AbstractImport {
 
         echo "Writing to $output...\n";
 
+        // Column headers
         $text = implode(self::SEPARATOR, array_keys($results[0])) . "\n";
 
         foreach ($results as $result) {
@@ -114,7 +115,7 @@ abstract class AbstractImport {
         }
 
         $output = $this->generateFile($results, $feedType);
-        $this->uploadFile($output, $feedType);
+        // $this->uploadFile($output, $feedType);
     }
     
     // Abstract functions
