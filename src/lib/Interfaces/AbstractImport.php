@@ -115,7 +115,7 @@ abstract class AbstractImport {
         }
 
         $output = $this->generateFile($results, $feedType);
-        // $this->uploadFile($output, $feedType);
+        $this->uploadFile($output, $feedType);
     }
     
     // Abstract functions
