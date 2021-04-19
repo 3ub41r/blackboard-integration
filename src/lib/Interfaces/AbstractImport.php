@@ -8,13 +8,6 @@ abstract class AbstractImport {
     const SEPARATOR = '|';
     const DATA_DIR = '../data';
 
-    // protected $datasourceKey;
-
-    // public function __construct($datasourceKey)
-    // {
-    //     $this->datasourceKey = $datasourceKey;
-    // }
-
     /**
      * Generate file from results and save it to a file in the output location.
      *
