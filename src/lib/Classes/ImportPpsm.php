@@ -18,6 +18,7 @@ class ImportPpsm extends AbstractImport
 
         $this->connection = SqlServerService::getConnection($serverName, $username, $password, 'SPACEDB1000');
 
+        // Add subjects to import here
         $this->subjects = "
             'SKAB3123',
             'SKKC4563'
