@@ -1,6 +1,6 @@
 # What is this?
 
-This is a set of PHP scripts to import data to Blackboard.
+These are a set of PHP scripts used to import data to Blackboard.
 
 ## How to run
 
@@ -22,7 +22,7 @@ You can also mount the `src` directory and bash into the container:
 docker run --rm -it -v $(pwd)/src:/usr/src/myapp/src blackboard bash
 ```
 
-To mount the output directory `data`:
+To mount the output directory, `data`:
 
 ```
 docker run --rm -it -v $(pwd)/src:/usr/src/myapp/src -v $(pwd)/data:/usr/src/myapp/data blackboard bash
