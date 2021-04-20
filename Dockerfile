@@ -24,6 +24,6 @@ COPY . /usr/src/myapp
 WORKDIR /usr/src/myapp
 # Make executable
 RUN chmod 0644 /usr/src/myapp/src/run.sh
-RUN cd src && composer install
+RUN cd src && composer install --optimize-autoloader
 
 CMD ["bash", "/usr/src/myapp/src/run.sh"]

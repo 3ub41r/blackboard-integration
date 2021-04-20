@@ -5,7 +5,7 @@ namespace App\Classes;
 use App\Interfaces\AbstractImport;
 use App\Services\SqlServerService;
 
-class ImportPpsm extends AbstractImport
+class ImportPpsmDiploma extends AbstractImport
 {
     protected $connection;
     protected $subjects;
