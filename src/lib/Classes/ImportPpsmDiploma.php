@@ -20,8 +20,8 @@ class ImportPpsm extends AbstractImport
 
         // Add subjects to import here
         $this->subjects = "
-            'SKAB3123',
-            'SKKC4563'
+            'UHAS1172',
+            'UHAK1122'
         ";
     }
 
