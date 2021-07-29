@@ -52,7 +52,7 @@ class ImportDiploma extends AbstractImport
             SELECT *
             FROM VW_UTMSPACE_COURSE_LECTURER
             WHERE NO_PEKERJA = a.NO_PEKERJA
-            AND SEMESTER = '$this->latestSemester'
+            AND SEMESTER = '{$this->latestSemester}'
         )";
 
         $stmt = $this->connection->query($sql);
@@ -78,7 +78,7 @@ class ImportDiploma extends AbstractImport
             SELECT *
             FROM VW_UTMSPACE_COURSE_STUDENT
             WHERE NO_MATRIK = a.NO_MATRIK
-            AND SEMESTER = '$this->latestSemester'
+            AND SEMESTER = '{$this->latestSemester}'
         )";
 
         $stmt = $this->connection->query($sql);
@@ -103,7 +103,7 @@ class ImportDiploma extends AbstractImport
             AND SEKSYEN = a.SEKSYEN
             AND SEMESTER = a.SEMESTER
         )
-        AND a.SEMESTER = '$this->latestSemester'";
+        AND a.SEMESTER = '{$this->latestSemester}'";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -122,7 +122,7 @@ class ImportDiploma extends AbstractImport
         FROM VW_UTMSPACE_COURSE_LECTURER a
         JOIN VW_UTMSPACE_LECTURER b ON b.NO_PEKERJA = a.NO_PEKERJA
         WHERE ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NOT NULL
-        AND a.SEMESTER = '$this->latestSemester'";
+        AND a.SEMESTER = '{$this->latestSemester}'";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -140,7 +140,7 @@ class ImportDiploma extends AbstractImport
         'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE_STUDENT a
         JOIN VW_UTMSPACE_COURSE_LECTURER b on b.KOD_KURSUS = a.KOD_KURSUS AND b.SEKSYEN = a.SEKSYEN AND b.SEMESTER = a.SEMESTER
-        WHERE a.SEMESTER = '$this->latestSemester'";
+        WHERE a.SEMESTER = '{$this->latestSemester}'";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
