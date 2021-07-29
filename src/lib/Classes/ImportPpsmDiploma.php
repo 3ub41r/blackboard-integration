@@ -51,8 +51,9 @@ class ImportPpsmDiploma extends AbstractImport
         'DDWL1103',
         'DDWE1152',
         'DDWE1203',
-        'DDWE1133',
+        'DDWE1133'
         ";
+        // Make sure the last line does not have a comma
     }
 
     public function processLecturers()
