@@ -5,5 +5,5 @@ return [
     // 'App\Classes\ImportFoundation',
     // 'App\Classes\ImportIdp',
     // 'App\Classes\ImportPpsm',
-    // 'App\Classes\ImportPpsmDiploma',
+     'App\Classes\ImportPpsmDiploma',
 ];
