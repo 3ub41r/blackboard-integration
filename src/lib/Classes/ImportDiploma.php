@@ -37,23 +37,18 @@ class ImportDiploma extends AbstractImport
     {
         $sql = "
         SELECT
-        CASE
-            WHEN ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NULL THEN a.NO_PEKERJA
-            ELSE SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1)
-        END AS external_person_key,
+        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
         'DIPLOMA_{$this->latestSemester}' AS data_source_key,
         UPPER(NAMA) AS firstname,
         '' AS lastname,
-        CASE
-            WHEN ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NULL THEN a.NO_PEKERJA
-            ELSE SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1)
-        END AS [user_id],
+        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS [user_id],
         NO_PEKERJA AS [passwd],
         'Y' AS available_ind,
         ISNULL(EMAIL_RASMI, EMAIL_KEDUA) AS email,
         'staff' AS institution_role
         FROM VW_UTMSPACE_LECTURER a
-        WHERE EXISTS (
+        WHERE ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NOT NULL
+        AND EXISTS (
             SELECT *
             FROM VW_UTMSPACE_COURSE_LECTURER
             WHERE NO_PEKERJA = a.NO_PEKERJA
@@ -121,15 +116,13 @@ class ImportDiploma extends AbstractImport
         $sql = "
         SELECT
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
-        CASE
-            WHEN ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NULL THEN a.NO_PEKERJA
-            ELSE SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1)
-        END AS external_person_key,
+        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
         'instructor' AS [role],
         'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE_LECTURER a
         JOIN VW_UTMSPACE_LECTURER b ON b.NO_PEKERJA = a.NO_PEKERJA
-        WHERE a.SEMESTER = '{$this->latestSemester}'";
+        WHERE ISNULL(EMAIL_RASMI, EMAIL_KEDUA) IS NOT NULL
+        AND a.SEMESTER = '{$this->latestSemester}'";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
