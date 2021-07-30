@@ -37,11 +37,11 @@ class ImportDiploma extends AbstractImport
     {
         $sql = "
         SELECT
-        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
+        NO_PEKERJA AS external_person_key,
         'DIPLOMA_{$this->latestSemester}' AS data_source_key,
         UPPER(NAMA) AS firstname,
         '' AS lastname,
-        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS [user_id],
+        NO_PEKERJA AS [user_id],
         NO_PEKERJA AS [passwd],
         'Y' AS available_ind,
         ISNULL(EMAIL_RASMI, EMAIL_KEDUA) AS email,
@@ -116,7 +116,7 @@ class ImportDiploma extends AbstractImport
         $sql = "
         SELECT
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
-        SUBSTRING(ISNULL(EMAIL_RASMI, EMAIL_KEDUA), 1, CHARINDEX('@', ISNULL(EMAIL_RASMI, EMAIL_KEDUA)) - 1) AS external_person_key,
+        NO_PEKERJA AS external_person_key,
         'instructor' AS [role],
         'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE_LECTURER a
