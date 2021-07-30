@@ -17,6 +17,8 @@ $sleepSeconds = 2;
 
 foreach ($dataSources as $dataSource) {
     $import = new $dataSource();
+
+    echo "\nImporting {$dataSource}\n";
     
     $import->processCourses();
     sleep($sleepSeconds);
