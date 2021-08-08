@@ -96,7 +96,7 @@ class ImportDiploma extends AbstractImport
         SELECT
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
         KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS course_id,
-        'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 8, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
+        'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 9, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
         'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE a
         WHERE EXISTS (
@@ -129,8 +129,6 @@ class ImportDiploma extends AbstractImport
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
-
-        echo 'Semester: ' . $this->latestSemester . "\n";
 
         $this->upload($results, 'membership');
     }
