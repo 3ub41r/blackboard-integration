@@ -17,7 +17,10 @@ class ImportDiploma extends AbstractImport
         $password = $_ENV['SQL_SERVER_AIMS_PASSWORD'];
 
         $this->connection = SqlServerService::getConnection($serverName, $username, $password, 'AIMSDB');
-        $this->latestSemester = $this->getLatestSemester();
+        
+        // $this->latestSemester = $this->getLatestSemester();
+        // Harcode semester
+        $this->latestSemester = '202120222';
     }
 
     private function getLatestSemester()
