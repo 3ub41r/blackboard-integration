@@ -20,7 +20,7 @@ class ImportDiploma extends AbstractImport
         
         // $this->latestSemester = $this->getLatestSemester();
         // Harcode semester
-        $this->latestSemester = '202120222';
+        $this->latestSemester = '202120221';
     }
 
     private function getLatestSemester()
