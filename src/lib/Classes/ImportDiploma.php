@@ -130,6 +130,8 @@ class ImportDiploma extends AbstractImport
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
 
+        echo 'Semester: ' . $this->latestSemester;
+
         $this->upload($results, 'membership');
     }
 
