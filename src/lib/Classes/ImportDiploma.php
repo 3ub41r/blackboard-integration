@@ -99,14 +99,24 @@ class ImportDiploma extends AbstractImport
         'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 9, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
         'DIPLOMA_{$this->latestSemester}' AS data_source_key
         FROM VW_UTMSPACE_COURSE a
-        WHERE EXISTS (
-            SELECT *
-            FROM VW_UTMSPACE_COURSE_LECTURER
-            WHERE KOD_KURSUS = a.KOD_KURSUS
-            AND SEKSYEN = a.SEKSYEN
-            AND SEMESTER = a.SEMESTER
-        )
-        AND a.SEMESTER = '{$this->latestSemester}'";
+        WHERE a.SEMESTER = '{$this->latestSemester}'"; 
+        
+        // "
+        // SELECT
+        // KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS external_course_key,
+        // KOD_KURSUS + '_' + SEKSYEN + '_' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + RIGHT('00' + ISNULL(SUBSTRING(SEMESTER, 9, 1), ''), 2) + '_AD_KL' AS course_id,
+        // 'SEM ' + SUBSTRING(SEMESTER, 3, 2) + SUBSTRING(SEMESTER, 7, 2) + '-' + SUBSTRING(SEMESTER, 9, 1) + ': ' + UPPER(NAMA_KURSUS) AS course_name,
+        // 'DIPLOMA_{$this->latestSemester}' AS data_source_key
+        // FROM VW_UTMSPACE_COURSE a
+        // WHERE a.SEMESTER = '{$this->latestSemester}'
+        // AND EXISTS (
+        //     SELECT *
+        //     FROM VW_UTMSPACE_COURSE_LECTURER
+        //     WHERE KOD_KURSUS = a.KOD_KURSUS
+        //     AND SEKSYEN = a.SEKSYEN
+        //     AND SEMESTER = a.SEMESTER
+        // )
+        // ";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
