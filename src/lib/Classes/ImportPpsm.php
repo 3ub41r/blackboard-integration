@@ -19,7 +19,8 @@ class ImportPpsm extends AbstractImport
 
         $this->connection = SqlServerService::getConnection($serverName, $username, $password, 'SPACEDB1000');
 
-        // Set datasource key
+        // It cannot use a different datasource key.
+        // Unless you want to update the .env file every semester.
         $this->datasourceKey = 'TryIntg01';
 
         // Add subjects to import here
