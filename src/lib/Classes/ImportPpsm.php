@@ -233,7 +233,7 @@ class ImportPpsm extends AbstractImport
     {
         $sql = "
         SELECT DISTINCT 
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
+        LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
@@ -262,7 +262,7 @@ class ImportPpsm extends AbstractImport
     public function processCourseLecturers()
     {
         $sql = "
-        SELECT a.subjCode + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + RIGHT('00' + CAST(b.semNo AS VARCHAR(2)), 2) + '_PS_' + 
+        SELECT LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + RIGHT('00' + CAST(b.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
@@ -286,7 +286,7 @@ class ImportPpsm extends AbstractImport
     {
         $sql = "
         SELECT b.stuMetricNo AS external_person_key,
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_PS_' + 
+        LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
