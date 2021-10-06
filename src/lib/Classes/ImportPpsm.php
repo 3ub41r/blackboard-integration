@@ -20,7 +20,7 @@ class ImportPpsm extends AbstractImport
         $this->connection = SqlServerService::getConnection($serverName, $username, $password, 'SPACEDB1000');
 
         // Set datasource key
-        $this->datasourceKey = '212201_OCT_PS_PPSM';
+        $this->datasourceKey = 'TryIntg01';
 
         // Add subjects to import here
         $this->subjects = "
