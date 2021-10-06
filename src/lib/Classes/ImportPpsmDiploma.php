@@ -9,6 +9,7 @@ class ImportPpsmDiploma extends AbstractImport
 {
     protected $connection;
     protected $subjects;
+    protected $datasourceKey;
 
     public function __construct()
     {
@@ -17,6 +18,9 @@ class ImportPpsmDiploma extends AbstractImport
         $password = $_ENV['SQL_SERVER_PASSWORD'];
 
         $this->connection = SqlServerService::getConnection($serverName, $username, $password, 'SPACEDB1000Dip');
+
+        // Set datasource key
+        $this->datasourceKey = '212201_OCT_PS_PPSM';
 
         // Add subjects to import here
         $this->subjects = "
@@ -60,7 +64,7 @@ class ImportPpsmDiploma extends AbstractImport
     {
         $sql = "
         SELECT DISTINCT a.lecID AS external_person_key,
-        'PPSM_DIPLOMA_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key,
+        '{$this->datasourceKey}' AS data_source_key,
         UPPER(a.lecName) AS firstname,
         '' AS lastname,
         UPPER(a.lecID) AS [user_id],
@@ -70,12 +74,7 @@ class ImportPpsmDiploma extends AbstractImport
         'staff' AS institution_role
         FROM Lecturer a
         JOIN SubjOffered b ON b.lecID = a.lecID
-        JOIN (
-            SELECT TOP 1 *
-            FROM SesSem
-            WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
-            ORDER BY sesSemNo DESC
-        ) c ON c.sesSemNo = b.sesSemNo
+        JOIN SesSem c ON c.sesSemNo = b.sesSemNo AND c.[status] = 'C'
         WHERE b.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
@@ -88,7 +87,7 @@ class ImportPpsmDiploma extends AbstractImport
     {
         $sql = "
         SELECT DISTINCT UPPER(b.stuMetricNo) AS external_person_key,
-        'PPSM_DIPLOMA_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key,
+        '{$this->datasourceKey}' AS data_source_key,
         UPPER(b.stuName) AS firstname,
         '' AS lastname,
         UPPER(b.stuMetricNo) AS [user_id],
@@ -98,12 +97,7 @@ class ImportPpsmDiploma extends AbstractImport
         'student' AS institution_role 
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
-        JOIN (
-            SELECT TOP 1 *
-            FROM SesSem
-            WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
-            ORDER BY sesSemNo DESC
-        ) c ON c.sesSemNo = a.sesSemNo
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
         WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
@@ -129,11 +123,11 @@ class ImportPpsmDiploma extends AbstractImport
             ELSE a.centerCode
         END AS course_id,
         'SEM ' + SUBSTRING(d.sesName, 3, 2) + SUBSTRING(d.sesName, 8, 2) + '-' + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + ': ' + UPPER(b.subjNameBI) AS course_name,
-        'PPSM_DIPLOMA_' + REPLACE(d.sesName, '/', '') + CAST(d.semNo AS VARCHAR) AS data_source_key
+        '{$this->datasourceKey}' AS data_source_key
         FROM StuRegSubj a
         INNER JOIN Subj b ON b.subjCode = a.subjCode 
         INNER JOIN Fac c ON c.facCode = b.facCode
-        INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND GETDATE() BETWEEN d.semStartDate AND d.lectureEndDate
+        INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND d.[status] = 'C'
         WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
@@ -153,9 +147,9 @@ class ImportPpsmDiploma extends AbstractImport
         END AS external_course_key,
         a.lecID AS external_person_key,
         'instructor' AS [role],
-        'PPSM_DIPLOMA_' + REPLACE(b.sesName, '/', '') + CAST(b.semNo AS VARCHAR) AS data_source_key
+        '{$this->datasourceKey}' AS data_source_key
         FROM SubjOffered a
-        JOIN SesSem b ON b.sesSemNo = a.sesSemNo AND GETDATE() BETWEEN b.semStartDate AND b.lectureEndDate
+        JOIN SesSem b ON b.sesSemNo = a.sesSemNo AND b.[status] = 'C'
         WHERE RTRIM(LTRIM(a.lecID)) IS NOT NULL
         AND a.subjCode IN ({$this->subjects})";
 
@@ -176,10 +170,10 @@ class ImportPpsmDiploma extends AbstractImport
             ELSE a.centerCode
         END AS external_course_key,
         'student' AS [role],
-        'PPSM_DIPLOMA_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key
+        '{$this->datasourceKey}' AS data_source_key
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
-        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND GETDATE() BETWEEN c.semStartDate AND c.lectureEndDate
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
         WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
