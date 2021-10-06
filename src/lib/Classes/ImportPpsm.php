@@ -253,8 +253,6 @@ class ImportPpsm extends AbstractImport
         INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND d.[status] = 'C'
         WHERE a.subjCode IN ({$this->subjects})";
 
-        echo $sql;
-
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
 
