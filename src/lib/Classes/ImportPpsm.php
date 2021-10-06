@@ -179,7 +179,7 @@ class ImportPpsm extends AbstractImport
             'SHMY2103',
             'SHAY2103',
             'SHMY1053',
-            'SHAY1053'        
+            'SHAY1053'
         ";
     }
 
@@ -252,6 +252,8 @@ class ImportPpsm extends AbstractImport
         INNER JOIN Fac c ON c.facCode = b.facCode
         INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND d.[status] = 'C'
         WHERE a.subjCode IN ({$this->subjects})";
+
+        echo $sql;
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
