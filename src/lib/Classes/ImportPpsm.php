@@ -240,7 +240,7 @@ class ImportPpsm extends AbstractImport
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
-        a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
+        LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
             WHEN a.centerCode IN ('04', '05') THEN 'KL'
