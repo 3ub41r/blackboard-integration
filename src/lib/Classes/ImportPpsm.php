@@ -228,27 +228,6 @@ class ImportPpsm extends AbstractImport
         $results = $stmt->fetchAll();
 
         $this->upload($results, 'person');
-
-        // Run second time but with lower case matric number
-        $sql = "
-        SELECT DISTINCT LOWER(b.stuMetricNo) AS external_person_key,
-        '{$this->datasourceKey}' AS data_source_key,
-        UPPER(b.stuName) AS firstname,
-        '' AS lastname,
-        UPPER(b.stuMetricNo) AS [user_id],
-        b.stuICNo AS [passwd],
-        'Y' AS available_ind,
-        b.eMail AS email,
-        'student' AS institution_role 
-        FROM StuRegSubj a
-        JOIN Main b ON b.stuRef = a.stuRef
-        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
-        WHERE a.subjCode IN ({$this->subjects})";
-
-        $stmt = $this->connection->query($sql);
-        $results = $stmt->fetchAll();
-
-        $this->upload($results, 'person');
     }
 
     public function processCourses()
