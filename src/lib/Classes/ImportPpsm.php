@@ -304,5 +304,26 @@ class ImportPpsm extends AbstractImport
         $results = $stmt->fetchAll();
 
         $this->upload($results, 'membership');
+
+        // Upload with lowercase
+        $sql = "
+        SELECT LOWER(b.stuMetricNo) AS external_person_key,
+        LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_PS_' + 
+        CASE 
+            WHEN a.centerCode = '01' THEN 'JB'
+            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            ELSE a.centerCode
+        END AS external_course_key,
+        'student' AS [role],
+        '{$this->datasourceKey}' AS data_source_key
+        FROM StuRegSubj a
+        JOIN Main b ON b.stuRef = a.stuRef
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
+        WHERE a.subjCode IN ({$this->subjects})";
+
+        $stmt = $this->connection->query($sql);
+        $results = $stmt->fetchAll();
+
+        $this->upload($results, 'membership');
     }
 }
