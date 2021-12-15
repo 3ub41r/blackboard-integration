@@ -59,12 +59,13 @@ class ImportFoundation extends AbstractImport
         'student' AS institution_role 
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
-        JOIN (
-            SELECT TOP 1 *
-            FROM SesSem
-            WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
-            ORDER BY sesSemNo DESC
-        ) c ON c.sesSemNo = a.sesSemNo";
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
+        -- JOIN (
+        --     SELECT TOP 1 *
+        --     FROM SesSem
+        --     WHERE GETDATE() BETWEEN semStartDate AND lectureEndDate
+        --     ORDER BY sesSemNo DESC
+        -- ) c ON c.sesSemNo = a.sesSemNo";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
