@@ -48,11 +48,11 @@ class ImportFoundation extends AbstractImport
     public function processStudents()
     {
         $sql = "
-        SELECT DISTINCT UPPER(b.stuMetricNo) AS external_person_key,
+        SELECT DISTINCT UPPER(b.matricNumber) AS external_person_key,
         'FOUNDATION_' + REPLACE(c.sesName, '/', '') + CAST(c.semNo AS VARCHAR) AS data_source_key,
         UPPER(b.stuName) AS firstname,
         '' AS lastname,
-        UPPER(b.stuMetricNo) AS [user_id],
+        UPPER(b.matricNumber) AS [user_id],
         b.stuICNo AS [passwd],
         'Y' AS available_ind,
         b.eMail AS email,
@@ -126,7 +126,7 @@ class ImportFoundation extends AbstractImport
     public function processEnrollments()
     {
         $sql = "
-        SELECT b.stuMetricNo AS external_person_key,
+        SELECT b.matricNumber AS external_person_key,
         a.subjCode + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
