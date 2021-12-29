@@ -75,8 +75,8 @@ class ImportPpsmDiploma extends AbstractImport
         'staff' AS institution_role
         FROM Lecturer a
         JOIN SubjOffered b ON b.lecID = a.lecID
-        JOIN SesSem c ON c.sesSemNo = b.sesSemNo AND c.[status] = 'C'
-        WHERE b.subjCode IN ({$this->subjects})";
+        JOIN SesSem c ON c.sesSemNo = b.sesSemNo AND c.[status] = 'C'";
+        // WHERE b.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
