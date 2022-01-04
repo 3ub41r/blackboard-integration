@@ -98,8 +98,8 @@ class ImportPpsmDiploma extends AbstractImport
         'student' AS institution_role 
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
-        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
-        WHERE a.subjCode IN ({$this->subjects})";
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'";
+        // WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -128,8 +128,8 @@ class ImportPpsmDiploma extends AbstractImport
         FROM StuRegSubj a
         INNER JOIN Subj b ON b.subjCode = a.subjCode 
         INNER JOIN Fac c ON c.facCode = b.facCode
-        INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND d.[status] = 'C'
-        WHERE a.subjCode IN ({$this->subjects})";
+        INNER JOIN SesSem d ON d.sesSemNo = a.sesSemNo AND d.[status] = 'C'";
+        // WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -151,8 +151,8 @@ class ImportPpsmDiploma extends AbstractImport
         '{$this->datasourceKey}' AS data_source_key
         FROM SubjOffered a
         JOIN SesSem b ON b.sesSemNo = a.sesSemNo AND b.[status] = 'C'
-        WHERE RTRIM(LTRIM(a.lecID)) IS NOT NULL
-        AND a.subjCode IN ({$this->subjects})";
+        WHERE RTRIM(LTRIM(a.lecID)) IS NOT NULL";
+        // AND a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
@@ -174,8 +174,8 @@ class ImportPpsmDiploma extends AbstractImport
         '{$this->datasourceKey}' AS data_source_key
         FROM StuRegSubj a
         JOIN Main b ON b.stuRef = a.stuRef
-        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'
-        WHERE a.subjCode IN ({$this->subjects})";
+        JOIN SesSem c ON c.sesSemNo = a.sesSemNo AND c.[status] = 'C'";
+        // WHERE a.subjCode IN ({$this->subjects})";
 
         $stmt = $this->connection->query($sql);
         $results = $stmt->fetchAll();
