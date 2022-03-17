@@ -312,13 +312,13 @@ class ImportPpsm extends AbstractImport
         LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode = '04' THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode = '04' THEN 'KL'
             ELSE a.centerCode
         END AS course_id,
         'SEM ' + SUBSTRING(d.sesName, 3, 2) + SUBSTRING(d.sesName, 8, 2) + '-' + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + ': ' + UPPER(b.subjNameBI) AS course_name,
@@ -341,7 +341,7 @@ class ImportPpsm extends AbstractImport
         SELECT LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + RIGHT('00' + CAST(b.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode = '04' THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         a.lecID AS external_person_key,
@@ -365,7 +365,7 @@ class ImportPpsm extends AbstractImport
         LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode = '04' THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         'student' AS [role],
@@ -386,7 +386,7 @@ class ImportPpsm extends AbstractImport
         LTRIM(RTRIM(a.subjCode)) + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_PS_' + 
         CASE 
             WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode = '04' THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         'student' AS [role],
