@@ -290,7 +290,7 @@ class ImportPpsm extends AbstractImport
         UPPER(b.stuName) AS firstname,
         '' AS lastname,
         UPPER(b.stuMetricNo) AS [user_id],
-        b.stuICNo AS [passwd],
+        UPPER(b.stuMetricNo) AS [passwd],
         'Y' AS available_ind,
         b.eMail AS email,
         'student' AS institution_role 
