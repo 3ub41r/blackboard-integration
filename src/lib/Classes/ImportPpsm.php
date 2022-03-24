@@ -255,6 +255,13 @@ class ImportPpsm extends AbstractImport
             'SHMY3023',
             'SHMR4013',
             'SHMY3043',
+            'SSCE1693',
+            'SSCE1793',
+            'SSCE1993',
+            'SSCE2193',
+            'SSCE2393',
+            'SSCM1803',
+            'SSCC3423',
             'SHMY2103'
         ";
     }
