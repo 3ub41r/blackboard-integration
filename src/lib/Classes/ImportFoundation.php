@@ -53,7 +53,7 @@ class ImportFoundation extends AbstractImport
         UPPER(b.stuName) AS firstname,
         '' AS lastname,
         UPPER(b.matricNumber) AS [user_id],
-        b.stuICNo AS [passwd],
+        b.stuMetricNo AS [passwd],
         'Y' AS available_ind,
         b.eMail AS email,
         'student' AS institution_role 
