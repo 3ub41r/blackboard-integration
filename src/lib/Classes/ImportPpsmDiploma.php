@@ -25,38 +25,17 @@ class ImportPpsmDiploma extends AbstractImport
 
         // Add subjects to import here
         $this->subjects = "
-        'DDWG1423',
-        'DDWG1113',
-        'DDWP1013',
-        'DDWP1113',
-        'DDWS1013',
-        'DDWC2453',
-        'DDPC2483',
-        'DDWJ2413',
-        'DDWJ2203',
-        'DDWJ2113',
-        'DDWS1023',
-        'DDWS1122',
-        'DDPA3082',
-        'DDPA1133',
-        'ULAB2032',
-        'DDPA3333',
-        'DDPA3092',
-        'DDPE2803',
-        'DDPK3113',
-        'DDWE1711',
-        'DDWD1573',
+        'UHAK1012',
+        'UHIT1022',
         'UHLB1032',
-        'DDWS1412',
-        'DDWS1712',
-        'DDWS1113',
-        'DDWL1102',
-        'DDWL1612',
-        'DDWL1423',
-        'DDWL1103',
-        'DDWE1152',
-        'DDWE1203',
-        'DDWE1133'
+        'UHLB1042',
+        'UHMS1182',
+        'UHMT1012',
+        'UICD1032',
+        'ULAB1032',
+        'ULAB1042',
+        'DICI3222',
+        'DICI3332'
         ";
         // Make sure the last line does not have a comma
     }
