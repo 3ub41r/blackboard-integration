@@ -78,14 +78,14 @@ class ImportFoundation extends AbstractImport
         SELECT DISTINCT 
         a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
-            WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode IN ('01', '04') THEN 'JB'
+            WHEN a.centerCode IN ('05', '06') THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         a.subjCode + '_' + a.section + '_' + SUBSTRING(d.sesName, 3, 2) +  SUBSTRING(d.sesName, 8, 2) + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
-            WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode IN ('01', '04') THEN 'JB'
+            WHEN a.centerCode IN ('05', '06') THEN 'KL'
             ELSE a.centerCode
         END AS course_id,
         'SEM ' + SUBSTRING(d.sesName, 3, 2) + SUBSTRING(d.sesName, 8, 2) + '-' + RIGHT('00' + CAST(d.semNo AS VARCHAR(2)), 2) + ': ' + UPPER(b.subjNameBI) AS course_name,
@@ -106,8 +106,8 @@ class ImportFoundation extends AbstractImport
         $sql = "
         SELECT a.subjCode + '_' + a.section + '_' + SUBSTRING(b.sesName, 3, 2) +  SUBSTRING(b.sesName, 8, 2) + RIGHT('00' + CAST(b.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
-            WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode IN ('01', '04') THEN 'JB'
+            WHEN a.centerCode IN ('05', '06') THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         a.lecID AS external_person_key,
@@ -129,8 +129,8 @@ class ImportFoundation extends AbstractImport
         SELECT b.matricNumber AS external_person_key,
         a.subjCode + '_' + a.section + '_' + SUBSTRING(c.sesName, 3, 2) +  SUBSTRING(c.sesName, 8, 2) + RIGHT('00' + CAST(c.semNo AS VARCHAR(2)), 2) + '_AF_' + 
         CASE 
-            WHEN a.centerCode = '01' THEN 'JB'
-            WHEN a.centerCode IN ('04', '05') THEN 'KL'
+            WHEN a.centerCode IN ('01', '04') THEN 'JB'
+            WHEN a.centerCode IN ('05', '06') THEN 'KL'
             ELSE a.centerCode
         END AS external_course_key,
         'student' AS [role],
