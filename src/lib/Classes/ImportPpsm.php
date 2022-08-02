@@ -264,7 +264,7 @@ class ImportPpsm extends AbstractImport
             'SSCC3423',
             'SCSR3104',
             'SCSJ3104',
-            'SCSV3104'
+            'SCSV3104',
             'SHMY2103'
         ";
     }
